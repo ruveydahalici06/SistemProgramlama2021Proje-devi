@@ -1,2 +1,2 @@
 # SistemProgramlama2021Proje-devi
-Sakarya Üniversitesi Güz Dönemi Proje Ödevi
+Sakarya Üniversitesi Sistem Programlama Güz Dönemi Proje Ödevi
