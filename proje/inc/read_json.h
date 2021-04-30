@@ -4,7 +4,7 @@
 #include "jrb.h"
 #include "fields.h"
 
-void create_tree_for_decode(JRB b);
-void create_tree_for_encode(JRB b);
+JRB create_tree_for_decode();
+JRB create_tree_for_encode();
 void extract_between_quotes(char* s, char* dest);
 
