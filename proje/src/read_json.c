@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "read_json.h"
-void extract_between_quotes(char* s, char* dest)
+void extract_between_quotes(char* s, char* dest) //extracts the string between double quotes for example "word" will be extracted as word.
 {
    int in_quotes = 0;
    *dest = 0;
@@ -19,13 +19,11 @@ void extract_between_quotes(char* s, char* dest)
       s++;
    }
 }
-void create_tree_for_decode(JRB b){ //key 01
+JRB create_tree_for_decode(){ //creating red black tree for decode mode
+    JRB b = make_jrb();
     IS is;
 
-    /* Create the JRB and the inputstruct */
     is = new_inputstruct(".kilit");
-
-    /* Read each line and insert it into the jrb as a key, and with NULL as the val. */
 
     while (get_line(is) >= 0) {
         if(strchr( is->text1, '{')==NULL && strchr( is->text1, '}')==NULL){
@@ -39,15 +37,14 @@ void create_tree_for_decode(JRB b){ //key 01
 
         }
     }
+    return b;
 
 }
-void create_tree_for_encode(JRB b){//key selam
+JRB create_tree_for_encode(){ //creating red black tree for encode mode
     IS is;
+    JRB b = make_jrb();
 
-    /* Create the JRB and the inputstruct */
     is = new_inputstruct(".kilit");
-
-    /* Read each line and insert it into the jrb as a key, and with NULL as the val. */
 
     while (get_line(is) >= 0) {
         if(strchr( is->text1, '{')==NULL && strchr( is->text1, '}')==NULL){
@@ -61,4 +58,5 @@ void create_tree_for_encode(JRB b){//key selam
 
         }
     }
+    return b;
 }
