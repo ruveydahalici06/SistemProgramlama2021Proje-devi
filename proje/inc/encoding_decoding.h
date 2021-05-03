@@ -1,14 +1,14 @@
 /**
-Sistem Programlama Proje Odevi
+*Sistem Programlama Proje Odevi
 * @file : encoding_decoding.h
-* @description : 
+* @description : reads an input file, and then writes to the output as encrypted or decrypted
 * @assignment : System Programming Project
 * @startdate : 02.05.2021
 * @author : Burak Cevik
 */
 
 #ifndef _ENCODINGDECODING_
-#define _ENCODINGDECODING
+#define _ENCODINGDECODING_
 #include "read_json.h"
 
 typedef struct endecode{
@@ -36,7 +36,7 @@ void do_decoding(ED);
 
 /* return 1 if it is encode, return 0 
 if it is decode. otherwise print error*/
-int isEncode(ED);
+int is_encode(ED);
 
 /*clear heap memory*/
 void free_ed(ED);
