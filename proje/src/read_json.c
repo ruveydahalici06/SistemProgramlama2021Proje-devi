@@ -1,3 +1,12 @@
+/**
+Sistem Programlama Proje Ödevi
+* @file : read_json.c
+* @description : reading .kilit file and extracting requested values.
+* @assignment : System Programming Project
+* @startdate : 01.05.2021
+* @author : Ayberk KÖSE
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -35,7 +44,7 @@ int parse_then_add(char *data, JRB tree, char mode) //parse the string and get t
 }
 char *extract_quotes(char *s) //removes double quotes from the string
 { 
-    char *degisken = (char *)(malloc(strlen(s)));
+    char *buff = (char *)(malloc(strlen(s)));
     s++;
     int i = strlen(s) - 1;
     while (i > 0)
@@ -47,8 +56,8 @@ char *extract_quotes(char *s) //removes double quotes from the string
         }
         i--;
     }
-    strcpy(degisken, s); //degisken has more space than s so there is no danger using strcpy
-    return degisken;
+    strcpy(buff, s); //buff has more space than s so there is no danger using strcpy
+    return buff;
 }
 void remove_spaces(char *str) //removing spaces from each line
 {
@@ -107,8 +116,6 @@ JRB create_tree_for_decode() //creating tree for decode
         }
         else if (strchr(is->text1, '}') != NULL)
         {
-            //remove_spaces(is->text1);
-
             char *data = strtok(is->text1, "}");
 
             if (data == NULL)
@@ -169,8 +176,6 @@ JRB create_tree_for_encode() //createing tree for encode mode
         }
         else if (strchr(is->text1, '}') != NULL)
         {
-            //remove_spaces(is->text1);
-
             char *data = strtok(is->text1, "}");
 
             if (data == NULL)

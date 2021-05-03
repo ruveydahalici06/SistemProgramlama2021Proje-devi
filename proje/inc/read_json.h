@@ -1,3 +1,11 @@
+/**
+Sistem Programlama Proje Ödevi
+* @file : read_json.h
+* @description : reading .kilit file and extracting requested values.
+* @assignment : System Programming Project
+* @startdate : 01.05.2021
+* @author : Ayberk KÖSE
+*/
 #ifndef READ_JSON
 #define READ_JSON
 
