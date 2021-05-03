@@ -79,7 +79,7 @@ void start_endecode(ED ed){
     printf("\nProcess is successfully finished.\n\n");
 }
 
-int is_encode(ED ed){
+int is_encode(ED ed){/* return 1 if process is encode. return 0 if it is decode*/
   if (ed->encode_or_decode=='e')
   {
     return 1;
