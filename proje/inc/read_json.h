@@ -1,10 +1,16 @@
+#ifndef READ_JSON
+#define READ_JSON
+
 #define MAX_WORDS 500
 #define MAX_CHAR 100
 
 #include "jrb.h"
 #include "fields.h"
 
-void create_tree_for_decode(JRB b);
-void create_tree_for_encode(JRB b);
-void extract_between_quotes(char* s, char* dest);
-
+JRB create_tree_for_decode();
+JRB create_tree_for_encode();
+void remove_spaces(char *str);
+char *extract_quotes(char *s);
+int parse_then_add(char *data, JRB tree, char mode);
+int file_exists(IS is);
+#endif
