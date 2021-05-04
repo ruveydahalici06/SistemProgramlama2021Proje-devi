@@ -1,10 +1,10 @@
 /**
-Sistem Programlama Proje Ödevi
+Sistem Programlama Proje Odevi
 * @file : read_json.c
 * @description : reading .kilit file and extracting requested values.
 * @assignment : System Programming Project
 * @startdate : 01.05.2021
-* @author : Ayberk KÖSE
+* @author : Ayberk KOSE
 */
 
 #include <stdio.h>
@@ -43,18 +43,29 @@ int parse_then_add(char *data, JRB tree, char mode) //parse the string and get t
     return 1;
 }
 char *extract_quotes(char *s) //removes double quotes from the string
-{ 
+{
     char *buff = (char *)(malloc(strlen(s)));
-    s++;
+    int quotes_count = 0;
+    if (s[0] == '"')
+    {
+        s++;
+        quotes_count++;
+    }
     int i = strlen(s) - 1;
     while (i > 0)
     {
         if (s[i] == '"')
         {
             s[i] = 0;
+            quotes_count++;
             break;
         }
         i--;
+    }
+    if (quotes_count != 2)
+    {
+        printf("Json dosyasi bozuk.\n");
+        exit(EXIT_SUCCESS);
     }
     strcpy(buff, s); //buff has more space than s so there is no danger using strcpy
     return buff;
@@ -71,7 +82,7 @@ void remove_spaces(char *str) //removing spaces from each line
     } while (*str++ = *d++);
 }
 JRB create_tree_for_decode() //creating tree for decode
-{ 
+{
     JRB b;
     IS is;
 
@@ -87,7 +98,7 @@ JRB create_tree_for_decode() //creating tree for decode
     {
         remove_spaces(is->text1);
 
-        if (strlen(is->text1) == 1)  //if line is empty
+        if (strlen(is->text1) == 1) //if line is empty
             continue;
         if (strchr(is->text1, '{') != NULL)
         {
@@ -131,7 +142,7 @@ JRB create_tree_for_decode() //creating tree for decode
     return b;
 }
 JRB create_tree_for_encode() //createing tree for encode mode
-{ 
+{
     JRB b;
     IS is;
 
