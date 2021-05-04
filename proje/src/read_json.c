@@ -7,9 +7,6 @@ Sistem Programlama Proje Odevi
 * @author : Ayberk KOSE
 */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 #include "read_json.h"
 
 int file_exists(IS is) //check if the .kilit file exists
@@ -85,7 +82,6 @@ JRB create_tree_for_decode() //creating tree for decode
 {
     JRB b;
     IS is;
-
     is = new_inputstruct(".kilit");
     b = make_jrb();
     if (!file_exists(is))
@@ -93,6 +89,8 @@ JRB create_tree_for_decode() //creating tree for decode
         printf("Kilit dosyasi yok.\n");
         exit(EXIT_SUCCESS);
     }
+    printf("\nRed Black Tree building process has started for decoding mode.\n");
+
     int control;
     while (get_line(is) >= 0)
     {
@@ -139,6 +137,7 @@ JRB create_tree_for_decode() //creating tree for decode
             }
         }
     }
+    printf("\nRed Black Tree is ready to go.\n");
     return b;
 }
 JRB create_tree_for_encode() //createing tree for encode mode
@@ -153,6 +152,8 @@ JRB create_tree_for_encode() //createing tree for encode mode
         printf("Kilit dosyasi yok.\n");
         exit(EXIT_SUCCESS);
     }
+    printf("\nRed Black Tree building process has started for encoding mode.\n");
+
     int control;
     while (get_line(is) >= 0)
     {
@@ -199,5 +200,6 @@ JRB create_tree_for_encode() //createing tree for encode mode
             }
         }
     }
+    printf("\nRed Black Tree is ready to go.\n");
     return b;
 }
