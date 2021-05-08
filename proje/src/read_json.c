@@ -6,9 +6,9 @@ Sistem Programlama Proje Odevi
 * @startdate : 01.05.2021
 * @author : Ayberk KOSE
 */
+static int word_count=0;
 
 #include "read_json.h"
-
 int file_exists(IS is) //check if the .kilit file exists
 {
     if (is == NULL)
@@ -19,9 +19,14 @@ int file_exists(IS is) //check if the .kilit file exists
 }
 int parse_then_add(char *data, JRB tree, char mode) //parse the string and get the essential value then add it to the red black tree
 {
+
     if (strchr(data, ':') == NULL) //json file bad format error
     {
         return 0;
+    }
+    if(!(word_count<MAX_WORDS)){
+        printf("Kelime siniri asildi.\n");
+        exit(EXIT_SUCCESS);
     }
     char *key = extract_quotes(strtok(data, ":"));
     char *value = extract_quotes(strtok(NULL, ":"));
@@ -34,6 +39,8 @@ int parse_then_add(char *data, JRB tree, char mode) //parse the string and get t
     {
         (void)jrb_insert_str(tree, strdup(value), new_jval_s(strdup(key)));
     }
+    word_count++;
+
     free(key);
     free(value);
 
