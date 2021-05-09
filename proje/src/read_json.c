@@ -6,7 +6,6 @@ Sistem Programlama Proje Odevi
 * @startdate : 01.05.2021
 * @author : Ayberk KOSE
 */
-static int word_count=0;
 
 #include "read_json.h"
 int file_exists(IS is) //check if the .kilit file exists
@@ -24,10 +23,7 @@ int parse_then_add(char *data, JRB tree, char mode) //parse the string and get t
     {
         return 0;
     }
-    if(!(word_count<MAX_WORDS)){
-        printf("Kelime siniri asildi.\n");
-        exit(EXIT_SUCCESS);
-    }
+
     char *key = extract_quotes(strtok(data, ":"));
     char *value = extract_quotes(strtok(NULL, ":"));
 
@@ -39,7 +35,6 @@ int parse_then_add(char *data, JRB tree, char mode) //parse the string and get t
     {
         (void)jrb_insert_str(tree, strdup(value), new_jval_s(strdup(key)));
     }
-    word_count++;
 
     free(key);
     free(value);
@@ -89,6 +84,7 @@ JRB create_tree_for_decode() //creating tree for decode
 {
     JRB b;
     IS is;
+    int braces_count=0;
     is = new_inputstruct(".kilit");
     b = make_jrb();
     if (!file_exists(is))
@@ -97,7 +93,6 @@ JRB create_tree_for_decode() //creating tree for decode
         exit(EXIT_SUCCESS);
     }
     printf("\nRed Black Tree building process has started for decoding mode.\n");
-
     int control;
     while (get_line(is) >= 0)
     {
@@ -107,7 +102,7 @@ JRB create_tree_for_decode() //creating tree for decode
             continue;
         if (strchr(is->text1, '{') != NULL)
         {
-
+            braces_count++;
             char *data = strtok(is->text1, "{");
             if (*data == '\n')
             {
@@ -132,6 +127,7 @@ JRB create_tree_for_decode() //creating tree for decode
         }
         else if (strchr(is->text1, '}') != NULL)
         {
+            braces_count++;
             char *data = strtok(is->text1, "}");
 
             if (data == NULL)
@@ -144,6 +140,11 @@ JRB create_tree_for_decode() //creating tree for decode
             }
         }
     }
+    if(braces_count!=2){
+        printf("Json dosyasinda suslu parantez eksik.\n");
+        exit(EXIT_SUCCESS);
+    }
+
     printf("\nRed Black Tree is ready to go.\n");
     return b;
 }
@@ -151,6 +152,7 @@ JRB create_tree_for_encode() //createing tree for encode mode
 {
     JRB b;
     IS is;
+    int braces_count=0;
 
     is = new_inputstruct(".kilit");
     b = make_jrb();
@@ -170,7 +172,7 @@ JRB create_tree_for_encode() //createing tree for encode mode
             continue; //if line is empty
         if (strchr(is->text1, '{') != NULL)
         {
-
+            braces_count++;
             char *data = strtok(is->text1, "{");
             if (*data == '\n')
             {
@@ -195,6 +197,7 @@ JRB create_tree_for_encode() //createing tree for encode mode
         }
         else if (strchr(is->text1, '}') != NULL)
         {
+            braces_count++;
             char *data = strtok(is->text1, "}");
 
             if (data == NULL)
@@ -206,6 +209,10 @@ JRB create_tree_for_encode() //createing tree for encode mode
                 exit(EXIT_SUCCESS);
             }
         }
+    }
+    if(braces_count!=2){
+        printf("Json dosyasinda suslu parantez eksik.\n");
+        exit(EXIT_SUCCESS);
     }
     printf("\nRed Black Tree is ready to go.\n");
     return b;
