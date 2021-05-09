@@ -8,8 +8,6 @@
 */
 
 #include"encoding_decoding.h"
-#include <stdlib.h>
-#include <string.h>
 
 ED make_endecode(char endecode,const char *i_name,const char* o_name)
 {
@@ -27,14 +25,14 @@ ED make_endecode(char endecode,const char *i_name,const char* o_name)
         exit(1);
     }
 
-    ed->output_fp=fopen(ed->o_name,"wb");
+    ed->output_fp=fopen(ed->o_name,"w");
 
   if(endecode=='e'){
     ed->encode_or_decode='e';
     ed->tree=create_tree_for_encode();/*create tree for encode.*/
   }
   else if(endecode=='d'){
-     ed->encode_or_decode='d';
+    ed->encode_or_decode='d';
     ed->tree=create_tree_for_decode();/*create tree for decode*/
   }
 
@@ -42,7 +40,8 @@ ED make_endecode(char endecode,const char *i_name,const char* o_name)
 }
 
 /* start encoding or decoding depend on parameters. */
-void start_endecode(ED ed){
+void start_endecode(ED ed)
+{
     if (is_encode(ed)==1){
       printf("\nEncryption process is about to begin. Output file name will be \"%s\"\n", ed->o_name);
     }
@@ -79,7 +78,8 @@ void start_endecode(ED ed){
     printf("\nProcess is successfully finished.\n\n");
 }
 
-int is_encode(ED ed){/* return 1 if process is encode. return 0 if it is decode*/
+int is_encode(ED ed)
+{
   if (ed->encode_or_decode=='e')
   {
     return 1;
@@ -89,7 +89,19 @@ int is_encode(ED ed){/* return 1 if process is encode. return 0 if it is decode*
     return 0;
   }
   else{/*print error if parameter is not e or d*/
-       perror("Invalid parameter.\n");
+       printf("Invalid parameter.\n");
        exit(1);
   }   
+}
+
+void free_ed(ED ed)/*delete and free struct ED*/
+{
+  if(ed!=NULL){
+      free(ed->i_name);
+      free(ed->o_name);
+      jettison_inputstruct(ed->is);
+      jrb_free_tree(ed->tree);
+      fclose(ed->output_fp);
+      free(ed);
+  }
 }
