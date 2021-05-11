@@ -9,14 +9,18 @@
 
 #include"encoding_decoding.h"
 
-ED make_endecode(char endecode,const char *i_name,const char* o_name)
-{
+ED make_endecode(const char* encode_or_decode,const char *i_name,const char* o_name)
+{	
+    if(strcmp(encode_or_decode,"-e")!=0 && strcmp(encode_or_decode,"-d")!=0){/* if parameter is not equal to -e and -d, exit */
+    	printf("\nInvalid mode\n");
+    	exit(1);  
+    }
+    
     ED ed;
     ed=(ED)malloc(sizeof(struct endecode));
 
     ed->i_name=strdup(i_name);
     ed->o_name=strdup(o_name);
-
     ed->is=new_inputstruct(ed->i_name);
     
     /*print error if file does not exist*/
@@ -27,12 +31,12 @@ ED make_endecode(char endecode,const char *i_name,const char* o_name)
 
     ed->output_fp=fopen(ed->o_name,"w");
 
-  if(endecode=='e'){
-    ed->encode_or_decode='e';
+  if(strcmp(encode_or_decode,"-e")==0){ /*if parameter is -e start encryption process*/
+    ed->encode_or_decode=strdup(encode_or_decode); /*assigment to struct variable*/
     ed->tree=create_tree_for_encode();/*create tree for encode.*/
   }
-  else if(endecode=='d'){
-    ed->encode_or_decode='d';
+  else if(strcmp(encode_or_decode,"-d")==0){	/*if parameter is -e start decryption process*/
+    ed->encode_or_decode=strdup(encode_or_decode);/*assigment to struct variable*/
     ed->tree=create_tree_for_decode();/*create tree for decode*/
   }
 
@@ -52,25 +56,27 @@ void start_endecode(ED ed)
     JRB temp_tree; // to get values
     int i=0;
 
-    while(get_line(ed->is) >= 0) 
+    while(get_line(ed->is) >= 0) /*read file line by line*/
     {
-      for (i = 0; i < ed->is->NF; i++) 
+      for (i = 0; i < ed->is->NF; i++) /* read words */
       {
-        temp_tree= jrb_find_str(ed->tree,ed->is->fields[i]);
-        char buf[MAX_CHAR]; /*MAX_CHAR = 100*/
+        temp_tree= jrb_find_str(ed->tree,ed->is->fields[i]); /*check if reading value is in the tree */
+        char buf[1000]; 
        
         if (temp_tree==NULL) /*if value is not found. */
         {
-          int len= snprintf(buf, sizeof buf, "%s %s", ed->is->fields[i],"");
-          if(fwrite(buf, len,1 , ed->output_fp)!= 1){
+          int len= snprintf(buf, sizeof buf, "%s %s", ed->is->fields[i],"");/*format(reading_value ) */
+          if(fwrite(buf, len,1 , ed->output_fp)!= 1){ // write to file if there is no error
             perror("Write error");
+            exit(1);
           }       
         }
         
         else{/*if value is found*/
-          int len= snprintf(buf, sizeof buf, "%s %s", temp_tree->val.s,"");
-          if(fwrite(buf, len,1 , ed->output_fp)!= 1){
+          int len= snprintf(buf, sizeof buf, "%s %s", temp_tree->val.s,"");/*format(encrypted_or_decrypted_value */
+          if(fwrite(buf, len,1 , ed->output_fp)!= 1){  // write file if there is no error
             perror("Write error\n");
+            exit(1);
           }
         }
     }
@@ -78,13 +84,13 @@ void start_endecode(ED ed)
     printf("\nProcess is successfully finished.\n\n");
 }
 
-int is_encode(ED ed)
+int is_encode(ED ed)/*return 1 if it is encode, return 0 if it is decode*/
 {
-  if (ed->encode_or_decode=='e')
+  if (strcmp(ed->encode_or_decode,"-e")==0)
   {
     return 1;
   }
-  else if (ed->encode_or_decode=='d')
+  else if (strcmp(ed->encode_or_decode,"-d")==0)
   {
     return 0;
   }
@@ -101,6 +107,7 @@ void free_ed(ED ed)/*delete and free struct ED*/
       free(ed->o_name);
       jettison_inputstruct(ed->is);
       jrb_free_tree(ed->tree);
+      free(ed->encode_or_decode);
       fclose(ed->output_fp);
       free(ed);
   }
