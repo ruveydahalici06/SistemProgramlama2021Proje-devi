@@ -12,7 +12,7 @@
 #include "read_json.h"
 
 typedef struct endecode{
-    char encode_or_decode; /* e for encode, d for decode */
+    char *encode_or_decode; /* -e for encode, -d for decode */
     char *i_name;/*input file name*/
     char *o_name;/*output file name*/
     IS is;/*to reads file*/
@@ -20,10 +20,10 @@ typedef struct endecode{
     JRB tree;
 }*ED;
 
- /*additionally this function creates JRB
+ /*creates ED. additionally this function creates JRB;
     paramaters: 
  ENCODE/DECODE(e-d), INPUT FILE NAME, OUTPUT FILE NAME */
-ED make_endecode(char, const char*,const char*);
+ED make_endecode(const char*, const char*,const char*);
 
 /* start encoding or decoding depend on parameters. */
 void start_endecode(ED);
