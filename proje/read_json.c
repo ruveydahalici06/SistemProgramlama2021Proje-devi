@@ -103,6 +103,7 @@ JRB create_tree_for_decode() //creating tree for decode
         if (strchr(is->text1, '{') != NULL)
         {
             braces_count++;
+
             char *data = strtok(is->text1, "{");
             if (*data == '\n')
             {
@@ -129,8 +130,7 @@ JRB create_tree_for_decode() //creating tree for decode
         {
             braces_count++;
             char *data = strtok(is->text1, "}");
-
-            if (data == NULL)
+            if (*data == '\n')
                 continue;
             control = parse_then_add(is->text1, b, 'd');
             if (control == 0)
@@ -140,7 +140,7 @@ JRB create_tree_for_decode() //creating tree for decode
             }
         }
     }
-    if(braces_count!=2){
+    if(braces_count<1){
         printf("Json dosyasinda suslu parantez eksik.\n");
         exit(EXIT_SUCCESS);
     }
@@ -200,7 +200,7 @@ JRB create_tree_for_encode() //createing tree for encode mode
             braces_count++;
             char *data = strtok(is->text1, "}");
 
-            if (data == NULL)
+            if (*data == '\n')
                 continue;
             control = parse_then_add(is->text1, b, 'e');
             if (control == 0)
@@ -210,7 +210,8 @@ JRB create_tree_for_encode() //createing tree for encode mode
             }
         }
     }
-    if(braces_count!=2){
+
+    if(braces_count<1){
         printf("Json dosyasinda suslu parantez eksik.\n");
         exit(EXIT_SUCCESS);
     }
