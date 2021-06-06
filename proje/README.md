@@ -1,9 +1,9 @@
 #GRUP ELEMANLARI - Görevleri
 
-	B171210046 - Rüveyda Halıcı - Proje Yöneticisi
-	B171210055 - Emre Demir - Deployment Sorumlusu
-	B181210001 - Ayberk Köse - Json formatındaki kilit dosyasının okunması
-	B171210034 - Burak Çevik - Encode ve decode işlemlerinin yapılması
+	 Rüveyda Halıcı - Proje Yöneticisi
+	 Emre Demir - Deployment Sorumlusu
+	 Ayberk Köse - Json formatındaki kilit dosyasının okunması
+	 Burak Çevik - Encode ve decode işlemlerinin yapılması
 
 
 #ÖZET
